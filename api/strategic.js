@@ -25,9 +25,9 @@ export default async function handler(req, res) {
       // dentro de api/strategic.js, no handler POST:
 
 const messages = [
-  { 
-    role: "system", 
-    content: "Você é um consultor estratégico de marketing digital, especialista em perfis de criadoras de conteúdo." 
+  {
+    role: "system",
+    content: "Você é um consultor estratégico de marketing digital, especialista em perfis de criadoras de conteúdo."
   },
   {
     role: "user",
@@ -51,7 +51,7 @@ Dados de performance recentes:
 
 Com base nisso, gere:
 1. Um plano de conteúdo de 4 semanas (tema + formato) alinhado a essa persona.
-2. 4 ganchos textuais por semana que falem diretamente das dores e desejos listados.
+2. 3 ganchos textuais por semana que falem diretamente das dores e desejos listados.
 3. Sugestão de CTA para cada post.
 4. Principais KPIs a monitorar a cada semana.
     `
