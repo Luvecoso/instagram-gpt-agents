@@ -1,0 +1,99 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Meus Agentes GPT",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/strategic": {
+      "post": {
+        "description": "Gera plano estratégico",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "objetivo": { "type": "string" },
+                  "persona": { "type": "object" },
+                  "performance": { "type": "object" }
+                },
+                "required": ["objetivo", "persona", "performance"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plano gerado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plano": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Health check",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/api/copy": {
+      "post": {
+        "description": "Gera roteiros e legendas",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tema": { "type": "string" },
+                  "objetivo_especifico": { "type": "string" },
+                  "cta": { "type": "string" }
+                },
+                "required": ["tema", "objetivo_especifico", "cta"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Copy gerado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "copy": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Health check",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    }
+  }
+}
