@@ -18,7 +18,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "type": "object" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" }
+                  },
+                  "required": ["status"]
+                }
+              }
+            }
           }
         }
       },
@@ -50,7 +60,8 @@
                   "type": "object",
                   "properties": {
                     "plano": { "type": "string" }
-                  }
+                  },
+                  "required": ["plano"]
                 }
               }
             }
@@ -65,7 +76,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "type": "object" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" }
+                  },
+                  "required": ["status"]
+                }
+              }
+            }
           }
         }
       },
@@ -97,7 +118,8 @@
                   "type": "object",
                   "properties": {
                     "copy": { "type": "string" }
-                  }
+                  },
+                  "required": ["copy"]
                 }
               }
             }
@@ -107,5 +129,6 @@
     }
   }
 }
+
 
 
