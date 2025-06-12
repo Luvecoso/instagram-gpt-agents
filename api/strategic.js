@@ -8,12 +8,21 @@ const config = new Configuration({
 const openai = new OpenAIApi(config);
 
 export default async function handler(req, res) {
+  // Health check para GET
   if (req.method === "GET") {
-    return res.status(200).json({ status: "Strategic Agent está ativo 🎯" });
+    return res.status(200).json({ status: "🤖 Strategic Agent ativo!" });
   }
+
+  // Lógica principal para POST
   if (req.method === "POST") {
     try {
       const { objetivo, persona, performance } = req.body;
+
+      // Validação básica
+      if (!objetivo || !persona?.descricao || !performance?.views) {
+        return res.status(400).json({ error: "Corpo inválido: faltam campos obrigatórios." });
+      }
+
       const messages = [
         { role: "system", content: "Você é um consultor estratégico de marketing digital." },
         {
@@ -31,12 +40,14 @@ Gere:
           `,
         },
       ];
+
       const completion = await openai.createChatCompletion({
         model: "gpt-4o-mini",
         messages,
         temperature: 0.7,
         max_tokens: 600,
       });
+
       return res.status(200).json({
         plano: completion.data.choices[0].message.content.trim(),
       });
@@ -45,7 +56,8 @@ Gere:
       return res.status(500).json({ error: "Falha ao gerar plano estratégico." });
     }
   }
-  res.setHeader("Allow", ["GET","POST"]);
-  res.status(405).end(`Método ${req.method} não permitido`);
-}
 
+  // Métodos não suportados
+  res.setHeader("Allow", ["GET", "POST"]);
+  return res.status(405).end(`Método ${req.method} não permitido`);
+}
