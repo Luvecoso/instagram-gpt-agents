@@ -16,9 +16,11 @@ export default async function handler(req, res) {
     // Lógica principal para POST
     if (req.method === "POST") {
       const { objetivo, persona, performance } = req.body;
-      if (!objetivo || !persona?.descricao || !performance?.views) {
-        return res.status(400).json({ error: "Faltam campos obrigatórios." });
-      }
+      if (!objetivo || !persona?.perfil || !performance?.views) {
+  return res
+    .status(400)
+    .json({ error: "Faltam campos obrigatórios: objetivo, persona.perfil ou performance.views." });
+}
 
       // dentro de api/strategic.js, no handler POST:
 
