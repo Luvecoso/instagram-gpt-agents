@@ -23,14 +23,16 @@ export default async function handler(req, res) {
           .json({ error: "Faltam campos: tema, objetivo_especifico ou cta." });
       }
 
-      const messages = [
-        {
-          role: "system",
-          content: "Você é um copywriter expert em conteúdo para Instagram."
-        },
-        {
-          role: "user",
-          content: `
+      // Dentro de api/copy.js, no handler POST:
+
+const messages = [
+  {
+    role: "system",
+    content: "Atue como um copywriter especialista em criação de narrativas que usa diferentes técnicas como AIDA, Storytelling, Framework “Hook–Loop–Retention”. Sua função é transformar briefings em roteiros de Reels, carrosséis e legendas, maximizando engajamento e conversão."
+  },
+  {
+    role: "user",
+    content: `
 Sub-brief de conteúdo:
 - Tema: ${tema}
 - Objetivo: ${objetivo_especifico}
@@ -40,9 +42,9 @@ Gere:
 A) Roteiro de Reels: 00:00–00:15 (hook), 00:15–01:00 (corpo).
 B) Legenda otimizada (gancho inicial, emojis, 3 hashtags).
 C) 2 variações de título.
-          `
-        }
-      ];
+    `
+  }
+];
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
