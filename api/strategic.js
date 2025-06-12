@@ -20,23 +20,42 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Faltam campos obrigatórios." });
       }
 
-      const messages = [
-        { role: "system", content: "Você é um consultor estratégico de marketing digital." },
-        {
-          role: "user",
-          content: `
-Meta: ${objetivo}
-Público: ${persona.descricao}
-Dados anteriores: views ${performance.views}, salvamentos ${performance.salvamentos}
+      // dentro de api/strategic.js, no handler POST:
 
-Gere:
-1. Plano de 4 semanas (temas + formatos)
-2. 3 ganchos por semana
-3. CTA sugerido para cada post
-4. Principais KPIs a monitorar
-          `,
-        },
-      ];
+const messages = [
+  { 
+    role: "system", 
+    content: "Você é um consultor estratégico de marketing digital, especialista em perfis de criadoras de conteúdo." 
+  },
+  {
+    role: "user",
+    content: `
+Meta de negócio: ${objetivo}
+
+Detalhes da persona:
+- Perfil: ${persona.perfil}
+- Faixa etária: ${persona.faixa_etaria}
+- Nível de conhecimento: ${persona.nivel_conhecimento}
+- Principais problemas:
+  • ${persona.problemas.join("\n  • ")}
+- Desejos e motivações:
+  • ${persona.desejos.join("\n  • ")}
+
+Dados de performance recentes:
+- Views: ${performance.views}
+- Salvamentos: ${performance.salvamentos}
+- Compartilhamentos: ${performance.compartilhamentos}
+- Novos seguidores: ${performance.novos_seguidores}
+
+Com base nisso, gere:
+1. Um plano de conteúdo de 4 semanas (tema + formato) alinhado a essa persona.
+2. 4 ganchos textuais por semana que falem diretamente das dores e desejos listados.
+3. Sugestão de CTA para cada post.
+4. Principais KPIs a monitorar a cada semana.
+    `
+  }
+];
+
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
