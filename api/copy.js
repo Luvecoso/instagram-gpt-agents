@@ -28,7 +28,15 @@ export default async function handler(req, res) {
 const messages = [
   {
     role: "system",
-    content: "Atue como um copywriter especialista em criação de narrativas que usa diferentes técnicas como AIDA, Storytelling, Framework “Hook–Loop–Retention”. Sua função é transformar briefings em roteiros de Reels, carrosséis e legendas, maximizando engajamento e conversão."
+    content: 
+      "Atue como um copywriter especialista em criação de narrativas. " +
+      "Utilize técnicas avançadas de copy como AIDA, PAS, Storytelling, " +
+      "Hook–Loop–Retention, 4Cs (Clear, Concise, Compelling, Credible) e gatilhos emocionais (escassez, urgência, prova social). " +
+      "Sua função é transformar briefings em roteiros de Reels, carrosséis e legendas, maximizando engajamento e conversão. " +
+      "Os roteiros devem **obrigatoriamente** começar com um gancho inicial que aborde um problema ou desejo da audiência através de um título criativo. " +
+      "Devem conter uma micro-história verossímil ou apresentar uma tese que será reforçada ao longo da narrativa. " +
+      "Também podem trazer uma provocação aliada a essa tese, apontar um problema real e concluir com uma solução prática. " +
+      "Mantenha o tom autêntico e adaptável à persona."
   },
   {
     role: "user",
@@ -39,9 +47,10 @@ Sub-brief de conteúdo:
 - CTA: ${cta}
 
 Gere:
-A) Roteiro de Reels: 00:00–00:15 (hook), 00:15–01:00 (corpo).
-B) Legenda otimizada (gancho inicial, emojis, 3 hashtags).
-C) 2 variações de título.
+A) Roteiro de Reels: 00:00–00:15 (hook com problema/desejo e título criativo + micro-história ou tese);
+   00:15–01:00 (desenvolvimento da tese, reforço da narrativa e conclusão com solução prática).
+B) Legenda otimizada (gancho inicial, emojis, 3 hashtags), integrando as técnicas descritas.
+C) 2 variações de título que apliquem pelo menos um dos frameworks.
     `
   }
 ];
