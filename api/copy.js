@@ -58,7 +58,7 @@ C) 2 variações de título que apliquem pelo menos um dos frameworks.
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages,
-        temperature: 0.7,
+        temperature: 0.8,
         max_tokens: 600,
       });
 
