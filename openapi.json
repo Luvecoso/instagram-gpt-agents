@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
     "title": "Meus Agentes GPT",
     "version": "1.0.0"
@@ -13,7 +13,8 @@
   "paths": {
     "/api/strategic": {
       "get": {
-        "description": "Health check",
+        "operationId": "healthCheckStrategic",
+        "description": "Health check do Agente Estratégico",
         "responses": {
           "200": {
             "description": "OK",
@@ -22,6 +23,7 @@
         }
       },
       "post": {
+        "operationId": "generateStrategicPlan",
         "description": "Gera plano estratégico",
         "requestBody": {
           "required": true,
@@ -58,7 +60,8 @@
     },
     "/api/copy": {
       "get": {
-        "description": "Health check",
+        "operationId": "healthCheckCopy",
+        "description": "Health check do Agente Copywriter",
         "responses": {
           "200": {
             "description": "OK",
@@ -67,6 +70,7 @@
         }
       },
       "post": {
+        "operationId": "generateCopy",
         "description": "Gera roteiros e legendas",
         "requestBody": {
           "required": true,
@@ -103,4 +107,5 @@
     }
   }
 }
+
 
