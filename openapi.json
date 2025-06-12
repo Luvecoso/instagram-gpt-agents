@@ -4,8 +4,23 @@
     "title": "Meus Agentes GPT",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://<seu-subdomínio>.vercel.app",
+      "description": "API principal dos agentes"
+    }
+  ],
   "paths": {
     "/api/strategic": {
+      "get": {
+        "description": "Health check",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "type": "object" } } }
+          }
+        }
+      },
       "post": {
         "description": "Gera plano estratégico",
         "requestBody": {
@@ -39,7 +54,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/copy": {
       "get": {
         "description": "Health check",
         "responses": {
@@ -48,9 +65,7 @@
             "content": { "application/json": { "schema": { "type": "object" } } }
           }
         }
-      }
-    },
-    "/api/copy": {
+      },
       "post": {
         "description": "Gera roteiros e legendas",
         "requestBody": {
@@ -84,16 +99,8 @@
             }
           }
         }
-      },
-      "get": {
-        "description": "Health check",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "type": "object" } } }
-          }
-        }
       }
     }
   }
 }
+
