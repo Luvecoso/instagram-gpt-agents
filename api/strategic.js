@@ -1,22 +1,20 @@
 // api/strategic.js
 
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 export default async function handler(req, res) {
   try {
-    // 1) Health check simples para GET, sem importar nada
+    // Health-check para GET
     if (req.method === "GET") {
       return res.status(200).json({ status: "🤖 Strategic Agent ativo!" });
     }
 
-    // 2) Apenas no POST carregamos a OpenAI
+    // Lógica principal para POST
     if (req.method === "POST") {
-      // Import dinâmico para só falhar se realmente for usar a OpenAI
-      const { Configuration, OpenAIApi } = await import("openai");
-
-      const config = new Configuration({
-        apiKey: process.env.OPENAI_API_KEY,
-      });
-      const openai = new OpenAIApi(config);
-
       const { objetivo, persona, performance } = req.body;
       if (!objetivo || !persona?.descricao || !performance?.views) {
         return res.status(400).json({ error: "Faltam campos obrigatórios." });
@@ -40,25 +38,22 @@ Gere:
         },
       ];
 
-      const completion = await openai.createChatCompletion({
+      const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages,
         temperature: 0.7,
         max_tokens: 600,
       });
 
-      return res.status(200).json({
-        plano: completion.data.choices[0].message.content.trim(),
-      });
+      const plano = completion.choices[0].message.content.trim();
+      return res.status(200).json({ plano });
     }
 
-    // 3) Métodos não suportados
+    // Métodos não suportados
     res.setHeader("Allow", ["GET", "POST"]);
     return res.status(405).end(`Método ${req.method} não permitido`);
   } catch (err) {
-    // Qualquer erro, retornamos a mensagem para diagnóstico
-    console.error("Erro na Function:", err);
+    console.error("Erro no Strategic Agent:", err);
     return res.status(500).json({ error: err.message || String(err) });
   }
 }
-
