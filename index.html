@@ -2,10 +2,44 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Instagram GPT Agents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPT Playground</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    textarea { width: 100%; max-width: 600px; }
+    button { margin-right: 1rem; padding: 0.5rem 1rem; }
+    pre { background: #f4f4f4; padding: 1rem; border-radius: 4px; }
+  </style>
 </head>
 <body>
-  <h1>✅ Projeto Deployado com Sucesso!</h1>
-  <p>As funções estão em <code>/api/strategic</code>.</p>
+  <h1>Teste de Agentes GPT</h1>
+  <p>Cole seu JSON de entrada abaixo e clique para gerar:</p>
+  <textarea id="input" rows="10">{
+  "objetivo": "500 seguidores em 30 dias e 2% de conversão em leads",
+  "persona": { /* ... */ },
+  "performance": { /* ... */ }
+}</textarea><br><br>
+  <button onclick="callAgent('strategic')">Gerar Plano</button>
+  <button onclick="callAgent('copy')">Gerar Copy</button>
+  <h2>Resposta:</h2>
+  <pre id="output">Aguardando ação...</pre>
+  <script>
+    async function callAgent(type) {
+      let input;
+      try {
+        input = JSON.parse(document.getElementById('input').value);
+      } catch(e) {
+        alert('JSON inválido: ' + e.message);
+        return;
+      }
+      const res = await fetch(`/api/${type}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input)
+      });
+      const data = await res.json();
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
 </body>
 </html>
