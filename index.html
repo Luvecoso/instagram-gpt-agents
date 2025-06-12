@@ -14,11 +14,23 @@
 <body>
   <h1>Teste de Agentes GPT</h1>
   <p>Cole seu JSON de entrada abaixo e clique para gerar:</p>
- <textarea id="input" rows="10">{
-  "objetivo": "500 seguidores em 30 dias e 2% de conversão em leads",
-  "persona": { /* ... */ },
-  "performance": { /* ... */ }
-}</textarea><br><br>
+  <textarea id="input" rows="10">{
+  "objetivo": "500 seguidores em 30 dias",
+  "persona": {
+    "perfil": "Criadora de conteúdo",
+    "faixa_etaria": "25-40",
+    "nivel_conhecimento": "básico",
+    "problemas": ["falta de criatividade"],
+    "desejos": ["conteúdo humanizado"]
+  },
+  "performance": {
+    "views": 1200,
+    "salvamentos": 80,
+    "compartilhamentos": 15,
+    "novos_seguidores": 30
+  }
+}</textarea>
+  <br><br>
   <button onclick="callAgent('strategic')">Gerar Plano</button>
   <button onclick="callAgent('copy')">Gerar Copy</button>
   <h2>Resposta:</h2>
@@ -41,5 +53,8 @@
       document.getElementById('output').textContent = JSON.stringify(data, null, 2);
     }
   </script>
+</body>
+</html>
+
 </body>
 </html>
