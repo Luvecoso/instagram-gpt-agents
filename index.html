@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GPT Playground</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; }
-    textarea { width: 100%; max-width: 600px; }
-    button { margin-right: 1rem; padding: 0.5rem 1rem; }
-    pre { background: #f4f4f4; padding: 1rem; border-radius: 4px; }
-  </style>
+  <!-- Tailwind via Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>Teste de Agentes GPT</h1>
-  <p>Cole seu JSON de entrada abaixo e clique para gerar:</p>
-  <textarea id="input" rows="10">{
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white shadow-lg rounded-2xl p-6 max-w-2xl w-full">
+    <h1 class="text-2xl font-bold mb-4 text-center">Teste de Agentes GPT</h1>
+    <label for="input" class="block text-sm font-medium text-gray-700 mb-1">JSON de Entrada</label>
+    <textarea
+      id="input"
+      rows="8"
+      class="w-full border border-gray-300 rounded-lg p-3 mb-4 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+    >{
   "objetivo": "500 seguidores em 30 dias",
   "persona": {
     "perfil": "Criadora de conteúdo",
@@ -30,11 +31,23 @@
     "novos_seguidores": 30
   }
 }</textarea>
-  <br><br>
-  <button onclick="callAgent('strategic')">Gerar Plano</button>
-  <button onclick="callAgent('copy')">Gerar Copy</button>
-  <h2>Resposta:</h2>
-  <pre id="output">Aguardando ação...</pre>
+    <div class="flex space-x-4 mb-6">
+      <button
+        onclick="callAgent('strategic')"
+        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg shadow transition"
+      >Gerar Plano</button>
+      <button
+        onclick="callAgent('copy')"
+        class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg shadow transition"
+      >Gerar Copy</button>
+    </div>
+    <h2 class="text-xl font-semibold mb-2">Resposta</h2>
+    <pre
+      id="output"
+      class="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm whitespace-pre-wrap break-all h-48 overflow-auto"
+    >Aguardando ação...</pre>
+  </div>
+
   <script>
     async function callAgent(type) {
       let input;
@@ -44,17 +57,26 @@
         alert('JSON inválido: ' + e.message);
         return;
       }
-      const res = await fetch(`/api/${type}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(input)
-      });
-      const data = await res.json();
-      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+      const btn = event.target;
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Processando...';
+      try {
+        const res = await fetch(`/api/${type}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(input)
+        });
+        const data = await res.json();
+        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+      } catch(err) {
+        document.getElementById('output').textContent = 'Erro: ' + err.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
     }
   </script>
 </body>
 </html>
 
-</body>
-</html>
