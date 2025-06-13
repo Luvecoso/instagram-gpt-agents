@@ -1,5 +1,11 @@
 // api/copy.js
 
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 export default async function handler(req, res) {
   try {
     // Health-check para GET
@@ -9,13 +15,6 @@ export default async function handler(req, res) {
 
     // Lógica principal para POST
     if (req.method === "POST") {
-      // Import dinâmico aqui
-      const { default: OpenAI } = await import("openai");
-
-      const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-      });
-
       const { tema, objetivo_especifico, cta } = req.body;
       if (!tema || !objetivo_especifico || !cta) {
         return res
@@ -23,24 +22,22 @@ export default async function handler(req, res) {
           .json({ error: "Faltam campos: tema, objetivo_especifico ou cta." });
       }
 
-      // Dentro de api/copy.js, no handler POST:
-
-const messages = [
-  {
-    role: "system",
-    content: 
-      "Atue como um copywriter especialista em criação de narrativas. " +
-      "Utilize técnicas avançadas de copy como AIDA, PAS, Storytelling, " +
-      "Hook–Loop–Retention, 4Cs (Clear, Concise, Compelling, Credible) e gatilhos emocionais (escassez, urgência, prova social). " +
-      "Sua função é transformar briefings em roteiros de Reels, carrosséis e legendas, maximizando engajamento e conversão. " +
-      "Os roteiros devem **obrigatoriamente** começar com um gancho inicial que aborde um problema ou desejo da audiência através de um título criativo. " +
-      "Devem conter uma micro-história verossímil ou apresentar uma tese que será reforçada ao longo da narrativa. " +
-      "Também podem trazer uma provocação aliada a essa tese, apontar um problema real e concluir com uma solução prática. " +
-      "Mantenha o tom autêntico e adaptável à persona."
-  },
-  {
-    role: "user",
-    content: `
+      const messages = [
+        {
+          role: "system",
+          content:
+            "Atue como um copywriter especialista em criação de narrativas. " +
+            "Utilize técnicas avançadas de copy como AIDA, PAS, Storytelling, " +
+            "Hook–Loop–Retention, 4Cs (Clear, Concise, Compelling, Credible) e gatilhos emocionais (escassez, urgência, prova social). " +
+            "Sua função é transformar briefings em roteiros de Reels, carrosséis e legendas, maximizando engajamento e conversão. " +
+            "Os roteiros devem obrigatoriamente começar com um gancho inicial que aborde um problema ou desejo da audiência através de um título criativo. " +
+            "Devem conter uma micro-história verossímil ou apresentar uma tese que será reforçada ao longo da narrativa. " +
+            "Também podem trazer uma provocação aliada a essa tese, apontar um problema real e concluir com uma solução prática. " +
+            "Formate a resposta em texto corrido, separada por tópicos com marcadores (•), sem código ou JSON."
+        },
+        {
+          role: "user",
+          content: `
 Sub-brief de conteúdo:
 - Tema: ${tema}
 - Objetivo: ${objetivo_especifico}
@@ -51,9 +48,9 @@ A) Roteiro de Reels: 00:00–00:15 (hook com problema/desejo e título criativo 
    00:15–01:00 (desenvolvimento da tese, reforço da narrativa e conclusão com solução prática).
 B) Legenda otimizada (gancho inicial, emojis, 3 hashtags), integrando as técnicas descritas.
 C) 2 variações de título que apliquem pelo menos um dos frameworks.
-    `
-  }
-];
+          `
+        }
+      ];
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
@@ -74,4 +71,3 @@ C) 2 variações de título que apliquem pelo menos um dos frameworks.
     return res.status(500).json({ error: err.message || String(err) });
   }
 }
-
