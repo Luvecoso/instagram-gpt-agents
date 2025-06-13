@@ -17,21 +17,19 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
       const { objetivo, persona, performance } = req.body;
       if (!objetivo || !persona?.perfil || !performance?.views) {
-  return res
-    .status(400)
-    .json({ error: "Faltam campos obrigatórios: objetivo, persona.perfil ou performance.views." });
-}
+        return res
+          .status(400)
+          .json({ error: "Faltam campos obrigatórios: objetivo, persona.perfil ou performance.views." });
+      }
 
-      // dentro de api/strategic.js, no handler POST:
-
-const messages = [
-  {
-    role: "system",
-    content: "Você é um consultor estratégico de marketing digital, especialista em perfis de criadoras de conteúdo."
-  },
-  {
-    role: "user",
-    content: `
+      const messages = [
+        {
+          role: "system",
+          content: "Você é um consultor estratégico de marketing digital, especialista em perfis de criadoras de conteúdo."
+        },
+        {
+          role: "user",
+          content: `
 Meta de negócio: ${objetivo}
 
 Detalhes da persona:
@@ -54,15 +52,16 @@ Com base nisso, gere:
 2. 3 ganchos textuais por semana que falem diretamente das dores e desejos listados.
 3. Sugestão de CTA para cada post.
 4. Principais KPIs a monitorar a cada semana.
-    `
-  }
-];
 
+Formate a resposta em texto corrido, separada por tópicos com marcadores (•), sem código ou JSON.
+          `
+        }
+      ];
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages,
-        temperature: 0.7,
+        temperature: 0.8,
         max_tokens: 600,
       });
 
@@ -78,3 +77,4 @@ Com base nisso, gere:
     return res.status(500).json({ error: err.message || String(err) });
   }
 }
+
